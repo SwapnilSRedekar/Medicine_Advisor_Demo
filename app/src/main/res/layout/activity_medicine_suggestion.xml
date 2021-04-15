@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGrey"
+    tools:context=".view.MedicineSuggestionActivity">
+
+    <LinearLayout
+        android:id="@+id/ly_medAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_medSuggstn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Would you like to add Medicine?"
+            android:fontFamily="serif"
+            android:textColor="@color/colorParrotGreen"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_medSuggstnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="serif"
+            android:layout_weight="1.5"
+            android:background="@drawable/rectangle_shape"
+            android:text="Yes"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_userSuffering"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:text="What are you suffering from ??"
+        android:textColor="@color/colorParrotGreen"
+        android:fontFamily="serif"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/ly_medAdd" />
+
+    <LinearLayout
+        android:id="@+id/ly_disease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userSuffering">
+
+        <EditText
+            android:id="@+id/et_userDisease"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorParrotGreen"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            android:hint="Enter Disease"
+            android:textColorHint="@color/colorWhite" />
+
+        <Button
+            android:id="@+id/btn_fetchMedicines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="serif"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="2"
+            android:background="@drawable/rectangle_shape"
+            android:textStyle="bold"
+            android:text="Fetch Medicines"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcy_medicineList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ly_disease" />
+
+    
+
+</androidx.constraintlayout.widget.ConstraintLayout>
