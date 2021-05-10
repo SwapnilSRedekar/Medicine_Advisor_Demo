@@ -1,15 +1,19 @@
-package com.example.medicineadvisor.view
+package com.example.medicineadvisor.ui
 
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.medicineadvisor.MedicinePost
 import com.example.medicineadvisor.R
-import com.example.medicineadvisor.model.MedicinePost
+import com.example.medicineadvisor.repositories.MedicineRepository
+import com.example.medicineadvisor.viewmodels.MedicineViewmodel
+import com.example.medicineadvisor.viewmodels.MedicineViewmodelFactory
 
 class UserActivity : AppCompatActivity() {
 
@@ -18,7 +22,7 @@ class UserActivity : AppCompatActivity() {
     lateinit var regUserWell : Button
     lateinit var regUserNotWell : Button
     lateinit var regResetUser : Button
-
+    lateinit var medicineViewmodel: MedicineViewmodel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +33,10 @@ class UserActivity : AppCompatActivity() {
         regUserWell = findViewById(R.id.btn_well)
         regUserNotWell = findViewById(R.id.btn_notWell)
         regResetUser = findViewById(R.id.btn_resetUser)
+
+        val medicineRepository = MedicineRepository(this)
+        val medicineViewmodelFactory = MedicineViewmodelFactory(application,medicineRepository)
+        medicineViewmodel = ViewModelProvider(this,medicineViewmodelFactory).get(MedicineViewmodel::class.java)
 
         var shareP = getSharedPreferences("SHARE_P",Context.MODE_PRIVATE)
         var name = shareP.getString("Usr_NAME",null)
@@ -57,7 +65,7 @@ class UserActivity : AppCompatActivity() {
             altDl.setTitle("Would you like to add medicine??")
             altDl.setPositiveButton("Yes",{ dialogInterface: DialogInterface, i: Int ->
                 var medPost = MedicinePost()
-                medPost.medicinePost(this)
+                medPost.medicinePost(this,medicineViewmodel)
             })
             altDl.setNegativeButton("No",{ dialogInterface: DialogInterface, i: Int ->
 

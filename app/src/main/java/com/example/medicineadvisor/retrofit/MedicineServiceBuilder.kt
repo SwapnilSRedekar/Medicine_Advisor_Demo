@@ -7,13 +7,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MedicineServiceBuilder {
 
-    var BASE_URl = ""
+    var BASE_URL = ""
 
     var loggs = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     var okHttp = OkHttpClient.Builder().addInterceptor(loggs)
 
-    var api = Retrofit.Builder().baseUrl(BASE_URl).addConverterFactory(GsonConverterFactory.create())
+    var api = Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
         .client(okHttp.build())
 
     var retrofit = api.build()

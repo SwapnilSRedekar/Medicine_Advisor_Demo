@@ -1,6 +1,5 @@
-package com.example.medicineadvisor.view
+package com.example.medicineadvisor.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView

@@ -27,6 +27,7 @@
         android:layout_width="match_parent"
         android:background="@drawable/ic_baseline_delete_forever_24"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_weight="3" />
 
 

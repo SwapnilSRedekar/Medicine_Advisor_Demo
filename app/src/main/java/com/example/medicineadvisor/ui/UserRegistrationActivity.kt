@@ -1,21 +1,21 @@
-package com.example.medicineadvisor.view
+package com.example.medicineadvisor.ui
 
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.core.view.get
 import com.example.medicineadvisor.R
+import com.example.medicineadvisor.utils.Utils
 import kotlinx.android.synthetic.main.activity_user_registration.*
 import java.time.LocalDate
 import java.time.Period
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UserRegistrationActivity : AppCompatActivity() {
 
@@ -41,11 +41,11 @@ class UserRegistrationActivity : AppCompatActivity() {
         name = shareP.getString("Usr_NAME",null)
 
         calendarIcon.setOnClickListener {
+            Utils.hideKeyboard(this,it)
             var now = Calendar.getInstance()
             var year = now.get(Calendar.YEAR)
             var months = now.get(Calendar.MONTH)
             var date = now.get(Calendar.DAY_OF_MONTH)
-            var selectedDate :String? = null
 
            var cal = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                 var usersAge = calculateAge(year,month+1,dayOfMonth)
@@ -100,16 +100,19 @@ class UserRegistrationActivity : AppCompatActivity() {
 
     fun setGenderSpinner(){
         userGender = findViewById(R.id.spn_gender)
+
         userGender.adapter = setGenderAdapter(resources.getStringArray(R.array.gender))
 
+
         userGender.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
+                
                 var selectedText = adapterView?.getChildAt(0) as TextView
-
 
                 if (adapterView.getItemAtPosition(position).toString() == "Gender") {
                     selectedText.setTextColor(resources.getColor(R.color.colorWhite))
@@ -132,6 +135,7 @@ class UserRegistrationActivity : AppCompatActivity() {
                 val dropdownView = super.getDropDownView(position, convertView, parent) as TextView
                 if (position == 0) {
                     dropdownView.setTextColor(resources.getColor(R.color.colorWhite))
+                    Utils.hideKeyboard(this@UserRegistrationActivity,userName)
 
                 } else {
                     dropdownView.setTextColor(resources.getColor(R.color.colorBlack))

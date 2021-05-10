@@ -1,5 +1,7 @@
 package com.example.medicineadvisor.retrofit
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.medicineadvisor.model.MedicineFields
 import com.example.medicineadvisor.model.MedicineList
 import retrofit2.Call
@@ -9,7 +11,7 @@ import retrofit2.http.*
 interface MedicineInterface {
 
     @GET("medicines")
-    fun getMedicines(@Query("usage") use : String?):Call<MutableList<MedicineList>>
+    fun getMedicines(@Query("usage") use : String?):Call<List<MedicineList>>
 
     @POST("medicines/")
     fun addMedicine(@Body newMedicine : MedicineFields ) : Call<MedicineFields>
