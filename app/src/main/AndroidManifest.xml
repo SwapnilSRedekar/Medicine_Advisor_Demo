@@ -13,10 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.MedicineDetailsActivity" />
-        <activity android:name=".ui.MedicineSuggestionActivity" />
-        <activity android:name=".ui.UserActivity"/>
-        <activity android:name=".ui.UserRegistrationActivity"/>
-        <activity android:name=".ui.SplashScreenActivity">
+        <activity
+            android:name=".ui.MedicineSuggestionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.UserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.UserRegistrationActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ui.SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

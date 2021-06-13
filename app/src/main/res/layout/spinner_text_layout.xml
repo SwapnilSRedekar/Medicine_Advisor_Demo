@@ -6,7 +6,8 @@
     android:textSize="18sp"
     android:singleLine="true"
     android:ellipsize="marquee"
+    android:fontFamily="serif"
     android:paddingTop="5dp"
     android:textStyle="bold"
-    android:paddingLeft="4dp"
+    android:paddingLeft="10dp"
     android:paddingBottom="5dp"/>

@@ -3,155 +3,95 @@ package com.example.medicineadvisor.ui
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MotionEvent
+import android.text.InputType
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.medicineadvisor.R
+import com.example.medicineadvisor.databinding.ActivityUserRegistrationBinding
+import com.example.medicineadvisor.utils.FindAge
 import com.example.medicineadvisor.utils.Utils
-import kotlinx.android.synthetic.main.activity_user_registration.*
-import java.time.LocalDate
-import java.time.Period
+import com.example.medicineadvisor.viewmodels.LoginViewModel
 import java.util.*
 
 class UserRegistrationActivity : AppCompatActivity() {
 
-    lateinit var userName : EditText
-    lateinit var userGender : Spinner
-    lateinit var userAge : TextView
-    lateinit var calendarIcon : ImageView
-    lateinit var userRegister : Button
     var name :String? = ""
-
+    lateinit var binding: ActivityUserRegistrationBinding
+    lateinit var loginViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_registration)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_user_registration)
+        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        binding.viewModel = loginViewModel
+        binding.lifecycleOwner = this
+        binding.spnGender.inputType = InputType.TYPE_NULL
+        binding.tvDob.inputType = InputType.TYPE_NULL
 
-        userName = findViewById(R.id.et_userName)
-        userAge = findViewById(R.id.tv_dob)
-        calendarIcon = findViewById(R.id.iv_calendarIcon)
-        userRegister = findViewById(R.id.btn_registrUser)
         setGenderSpinner()
 
         var shareP = getSharedPreferences("SHARE_P",Context.MODE_PRIVATE)
         name = shareP.getString("Usr_NAME",null)
 
-        calendarIcon.setOnClickListener {
-            Utils.hideKeyboard(this,it)
-            var now = Calendar.getInstance()
-            var year = now.get(Calendar.YEAR)
-            var months = now.get(Calendar.MONTH)
-            var date = now.get(Calendar.DAY_OF_MONTH)
-
-           var cal = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                var usersAge = calculateAge(year,month+1,dayOfMonth)
-               if (usersAge>=18){
-                   userAge.setText(""+dayOfMonth+"/"+(month+1)+"/"+year)
-                  }else{
-                   userAge.setText("")
-                   Toast.makeText(this,"Sorry!! You are under 18",Toast.LENGTH_SHORT).show()
-               }
-
-           }
-           ,year,months,date)
-            cal.show()
-
+        binding.tvDob.setOnClickListener {
+            calendarOpen(it)
+        }
+        binding.tilDOB.setEndIconOnClickListener {
+            calendarOpen(it)
         }
 
-        userRegister.setOnClickListener {
-            var empty : Boolean = false
+        loginViewModel.startActivity.observe(this,Observer{userActivity->
+            if (userActivity) {
+                var sharePrEdit = shareP.edit()
+                sharePrEdit.putString("Usr_NAME", binding.etUserName.text.toString())
+                sharePrEdit.apply()
 
-            if (userName.text.isEmpty()){
-                userName.error = "Name cannot be blank!!"
-                empty = true
+                var intent = Intent(this, UserActivity::class.java)
+                startActivity(intent)
+                finish()
             }
-            if (spn_gender.selectedItem.equals("Gender")){
-                (spn_gender.selectedView as TextView).error = "Gender can not be blank!!"
-                empty = true
-            }
-            if (userAge.text.isEmpty()){
-                (userAge).error = "Please select DOB"
-                empty = true
-            }
-            if (empty) return@setOnClickListener
-
-            var sharePrEdit = shareP.edit()
-            sharePrEdit.putString("Usr_NAME",userName.text.toString())
-            sharePrEdit.apply()
-
-            var intent = Intent(this,UserActivity::class.java)
-            startActivity(intent)
-            finish()
-
-        }
+        })
     }
 
-    fun calculateAge(y :Int,m:Int,d:Int) : Int{
-        var todaysDate = LocalDate.now()
-        var selectedDate = LocalDate.of(y,m,d)
-        var diff = Period.between(selectedDate,todaysDate)
-        var age = diff.years
-        return age
-    }
+    fun calendarOpen(view: View) {
+        Utils.hideKeyboard(this,view)
+        var now = Calendar.getInstance()
+        var currentDay = now.get(Calendar.DAY_OF_MONTH)
+        var currentMonth = now.get(Calendar.MONTH)
+        var currentYear = now.get(Calendar.YEAR)
 
-    fun setGenderSpinner(){
-        userGender = findViewById(R.id.spn_gender)
-
-        userGender.adapter = setGenderAdapter(resources.getStringArray(R.array.gender))
-
-
-        userGender.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-                
-                var selectedText = adapterView?.getChildAt(0) as TextView
-
-                if (adapterView.getItemAtPosition(position).toString() == "Gender") {
-                    selectedText.setTextColor(resources.getColor(R.color.colorWhite))
-                } else {
-                    selectedText.setTextColor(resources.getColor(R.color.colorParrotGreen))
-                }
+        var cal = DatePickerDialog(this,DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            var usersAge = FindAge.calculateAge(dayOfMonth,(month+1),year,currentDay,(currentMonth+1),currentYear)
+            if (usersAge>=18){
+                binding.tvDob.setText(""+dayOfMonth+"/"+(month+1)+"/"+year)
+            }else{
+                binding.tvDob.setText("")
+                Toast.makeText(this,"Sorry!! You are under 18",Toast.LENGTH_SHORT).show()
             }
         }
+            ,currentYear,currentMonth,currentDay)
+        cal.show()
     }
 
-    fun setGenderAdapter(spinnerType : Array<String>) : ArrayAdapter<String>{
-
-        var adapter = object :ArrayAdapter<String>(this,R.layout.spinner_text_layout,spinnerType){
-
-            override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val dropdownView = super.getDropDownView(position, convertView, parent) as TextView
-                if (position == 0) {
-                    dropdownView.setTextColor(resources.getColor(R.color.colorWhite))
-                    Utils.hideKeyboard(this@UserRegistrationActivity,userName)
-
-                } else {
-                    dropdownView.setTextColor(resources.getColor(R.color.colorBlack))
-                }
-                return dropdownView
-            }
-        }
-        return adapter
+    fun setGenderSpinner() {
+        val genderList = resources.getStringArray(R.array.gender)
+        var arrayAdapter = ArrayAdapter(this, R.layout.spinner_text_layout, genderList)
+        binding.spnGender.setAdapter(arrayAdapter)
     }
 
     override fun onResume() {
         super.onResume()
-        if (name!=null){
-            var intent = Intent(this,UserActivity::class.java)
+        if (name != null) {
+            var intent = Intent(this, UserActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
+
 }

@@ -1,11 +1,8 @@
 package com.example.medicineadvisor.retrofit
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.medicineadvisor.model.MedicineFields
 import com.example.medicineadvisor.model.MedicineList
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.http.*
 
 interface MedicineInterface {

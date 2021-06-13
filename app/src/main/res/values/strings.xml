@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Medicine Advisor</string>
+    <string name="empty"></string>
+    <string name="wrongUsername">User name is wrong</string>
     <string-array name="gender">
-        <item>Gender</item>
         <item>Male</item>
         <item>Female</item>
         <item>Other</item>

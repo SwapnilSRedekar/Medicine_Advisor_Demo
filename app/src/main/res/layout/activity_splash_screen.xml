@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorGrey"
-    tools:context=".ui.SplashScreenActivity">
-
-    <ImageView
-        android:id="@+id/iv_splashScreenLogo"
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:src="@drawable/ic_baseline_local_hospital_24"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="50dp"/>
+        android:layout_height="match_parent"
+        android:background="@color/colorGrey"
+        tools:context=".ui.SplashScreenActivity">
 
-    <TextView
-        android:id="@+id/tv_splashScreenText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
-        android:fontFamily="cursive"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/iv_splashScreenLogo"
-        android:layout_marginTop="30dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorParrotGreen"
-        android:text="Medicine Advisor"
-        android:textSize="80dp"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/separateLogoAndText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".50" />
+
+        <ImageView
+            android:id="@+id/iv_splashScreenLogo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_baseline_local_hospital_24"
+            app:layout_constraintBottom_toBottomOf="@+id/separateLogoAndText"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_splashScreenText"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fontFamily="cursive"
+            android:gravity="center"
+            android:text="Medicine Advisor"
+            android:textColor="@color/colorParrotGreen"
+            android:textSize="80dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_splashScreenLogo"
+            app:layout_constraintTop_toTopOf="@+id/separateLogoAndText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -2,64 +2,63 @@ package com.example.medicineadvisor
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
+import com.example.medicineadvisor.databinding.AddMedicineLayoutBinding
 import com.example.medicineadvisor.model.MedicineFields
 import com.example.medicineadvisor.utils.Utils
 import com.example.medicineadvisor.viewmodels.MedicineViewmodel
 
 class MedicinePost {
 
-    fun medicinePost(ctx:Context,medicineViewmodel: MedicineViewmodel) {
+    lateinit var addMedicineView: AddMedicineLayoutBinding
 
-        val addMedicineView = LayoutInflater.from(ctx).inflate(R.layout.add_medicine_layout, null)
-        var medicineName = addMedicineView.findViewById<EditText>(R.id.et_medNameAdd)
-        var medicineUsage = addMedicineView.findViewById<EditText>(R.id.et_medUsageAdd)
-        var medicineDesc = addMedicineView.findViewById<EditText>(R.id.et_medDescAdd)
-        var medicineAddBtn = addMedicineView.findViewById<Button>(R.id.btn_addMedicine)
-        var medicineCanclBtn = addMedicineView.findViewById<Button>(R.id.btn_cancelMedicine)
+    fun medicinePost(ctx: Context, medicineViewmodel: MedicineViewmodel) {
+
+        addMedicineView = DataBindingUtil.inflate(LayoutInflater.from(ctx),R.layout.add_medicine_layout,null,false)
 
         var alrt: AlertDialog.Builder = AlertDialog.Builder(ctx)
-        alrt.setView(addMedicineView)
+        alrt.setView(addMedicineView.root)
         val alrtDlg = alrt.create()
 
-        medicineAddBtn.setOnClickListener {
+        addMedicineView.btnAddMedicine.setOnClickListener {
             var check = false
-            if (medicineName.text.toString().isEmpty()) {
-                medicineName.error = "Add Medicine Name"
+            if (addMedicineView.etMedNameAdd.text.toString().isEmpty()) {
+                addMedicineView.etMedNameAdd.error = "Add Medicine Name"
                 check = true
             }
-            if (medicineUsage.text.toString().isEmpty()) {
-                medicineUsage.error = "Add Medicine Usage"
+            if (addMedicineView.etMedUsageAdd.text.toString().isEmpty()) {
+                addMedicineView.etMedUsageAdd.error = "Add Medicine Usage"
                 check = true
             }
-            if (medicineDesc.text.toString().isEmpty()) {
-                medicineDesc.error = "Add Medicine Description"
+            if (addMedicineView.etMedDescAdd.text.toString().isEmpty()) {
+                addMedicineView.etMedDescAdd.error = "Add Medicine Description"
                 check = true
             }
             if (check) return@setOnClickListener
 
             var newMedicine = MedicineFields(
-                "", medicineName.text.toString(),
-                medicineUsage.text.toString(), medicineDesc.text.toString()
+                "",
+                addMedicineView.etMedNameAdd.text.toString(),
+                addMedicineView.etMedUsageAdd.text.toString(),
+                addMedicineView.etMedDescAdd.text.toString()
             )
 
             var response = medicineViewmodel.addMedicine(newMedicine)
-            if (response){
-                Toast.makeText(ctx,"Medicine added",Toast.LENGTH_LONG).show()
-                Utils.hideKeyboard(ctx,it)
+            if (response) {
+                Toast.makeText(ctx, "Medicine added", Toast.LENGTH_LONG).show()
+                Utils.hideKeyboard(ctx, it)
                 alrtDlg.dismiss()
 
-            }else{
-                Toast.makeText(ctx,Utils.noInternetMsg,Toast.LENGTH_LONG).show()
-                Utils.hideKeyboard(ctx,it)
+            } else {
+                Toast.makeText(ctx, Utils.noInternetMsg, Toast.LENGTH_LONG).show()
+                Utils.hideKeyboard(ctx, it)
             }
         }
 
-        medicineCanclBtn.setOnClickListener {
-            Utils.hideKeyboard(ctx,it)
+        addMedicineView.btnCancelMedicine.setOnClickListener {
+            Utils.hideKeyboard(ctx, it)
             alrtDlg.cancel()
 
         }

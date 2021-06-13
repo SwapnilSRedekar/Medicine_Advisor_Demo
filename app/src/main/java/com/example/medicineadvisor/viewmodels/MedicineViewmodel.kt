@@ -19,6 +19,7 @@ import com.example.medicineadvisor.utils.Utils
 
 class MedicineViewmodel(application: Application,var repo : MedicineRepository) : AndroidViewModel(application) {
 
+
     fun getMedicines(use:String?): LiveData<List<MedicineEntity>>? {
         if (hasInternetConnection()){
             repo.getMedicinesRepo(use)
@@ -50,13 +51,13 @@ class MedicineViewmodel(application: Application,var repo : MedicineRepository) 
     }
 
     fun hasInternetConnection(): Boolean {
-        var connectivitiManager = getApplication<Application>().getSystemService(
+        var connectivityManager = getApplication<Application>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val activeNetwork = connectivitiManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
             val capabilities =
-                connectivitiManager.getNetworkCapabilities(activeNetwork) ?: return false
+                connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
             return when {
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
@@ -64,10 +65,10 @@ class MedicineViewmodel(application: Application,var repo : MedicineRepository) 
             }
 
         } else {
-            connectivitiManager.activeNetworkInfo?.run {
+            connectivityManager.activeNetworkInfo?.run {
                 return when (type) {
                     ConnectivityManager.TYPE_WIFI -> true
-                    ContactsContract.CommonDataKinds.Email.TYPE_MOBILE -> true
+                    ConnectivityManager.TYPE_MOBILE->true
                     else -> false
                 }
             }

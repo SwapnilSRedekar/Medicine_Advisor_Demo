@@ -1,83 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorGrey"
-    tools:context=".ui.UserRegistrationActivity">
+<layout>
 
-    <LinearLayout
-        android:id="@+id/lin_layout"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
+    <data>
+        <variable
+            name="utils"
+            type="com.example.medicineadvisor.utils.Utils" />
+
+        <variable
+            name="viewModel"
+            type="com.example.medicineadvisor.viewmodels.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:weightSum="3"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/colorGrey"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="10dp"
+        android:theme="@style/Theme.MaterialComponents.Light.Bridge"
+        tools:context=".ui.UserRegistrationActivity">
 
-        <EditText
-            android:id="@+id/et_userName"
+        <LinearLayout
+            android:id="@+id/lin_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="serif"
-            android:textStyle="bold"
-            android:textColor="@color/colorParrotGreen"
-            android:layout_weight="1"
-            android:textColorHint="@color/colorWhite"
-            android:hint="Enter your name"/>
-        <Spinner
-            android:id="@+id/spn_gender"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="3"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_dob"
-                android:layout_width="wrap_content"
-                android:layout_weight="2"
-                android:hint="Select DOB"
-                android:fontFamily="serif"
-                android:textSize="15dp"
-                android:gravity="center"
-                android:textStyle="bold"
+            android:orientation="vertical"
+            android:weightSum="3"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="Your name"
                 android:textColor="@color/colorParrotGreen"
                 android:textColorHint="@color/colorWhite"
-                android:layout_marginStart="5dp"
-                android:layout_height="wrap_content"/>
-            <ImageView
-                android:id="@+id/iv_calendarIcon"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/ic_baseline_calendar_today_24"
-                android:layout_height="wrap_content"/>
+                android:textStyle="bold"
+                app:boxStrokeColor="@color/colorParrotGreen"
+                app:boxStrokeErrorColor="@color/colorOrange"
+                app:errorText='@{viewModel.userNameError}'
+                app:errorTextColor="@color/colorOrange"
+                app:startIconDrawable="@drawable/ic_baseline_person_24"
+                app:startIconTint="@color/colorParrotGreen">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text='@={viewModel.userName}'
+                    android:textColor="@color/colorParrotGreen"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:hint="Gender"
+                android:textColorHint="@color/colorWhite"
+                app:boxStrokeColor="@color/colorParrotGreen"
+                app:boxStrokeErrorColor="@color/colorOrange"
+                app:errorText='@{viewModel.userGenderError}'
+                app:errorTextColor="@color/colorOrange"
+                app:startIconDrawable="@drawable/ic_baseline_gender_24"
+                app:startIconTint="@color/colorParrotGreen">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spn_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:text='@={viewModel.userGender}'
+                    android:onClick="@{()->utils.INSTANCE.hideKeyboard(context,spnGender)}"
+                    android:textColor="@color/colorParrotGreen"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_DOB"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:hint="Date Of Birth"
+                android:textColorHint="@color/colorWhite"
+                app:boxStrokeColor="@color/colorParrotGreen"
+                app:boxStrokeErrorColor="@color/colorOrange"
+                app:endIconDrawable="@drawable/ic_baseline_calendar_today_24"
+                app:endIconMode="custom"
+                app:endIconTint="@color/colorParrotGreen"
+                app:errorText='@{viewModel.userDobError}'
+                app:errorTextColor="@color/colorOrange"
+                app:startIconDrawable="@drawable/ic_baseline_cake_24"
+                app:startIconTint="@color/colorParrotGreen">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="serif"
+                    android:text='@={viewModel.userDob}'
+                    android:textColor="@color/colorParrotGreen"
+                    android:textColorHint="@color/colorWhite"
+                    android:textStyle="bold" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_registrUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginEnd="70dp"
+            android:background="@drawable/rectangle_shape"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:text="Register Now !!"
+            android:textAllCaps="false"
+            android:textColor="@color/colorGrey"
+            android:textStyle="bold"
+            android:onClick="@{()->viewModel.checkMandatoryFields()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lin_layout" />
 
-    <Button
-        android:id="@+id/btn_registrUser"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register Now !!"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textStyle="bold"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:textColor="@color/colorGrey"
-        android:fontFamily="serif"
-        android:gravity="center"
-        android:background="@drawable/rectangle_shape"
-        app:layout_constraintTop_toBottomOf="@+id/lin_layout"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
